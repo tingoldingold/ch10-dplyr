@@ -11,28 +11,31 @@ library(fueleconomy)
 
 # You should now have access to the `vehicles` data frame
 # You can use `View()` to inspect it
-
+View(vehicles)
 
 # Select the different manufacturers (makes) of the cars in this data set. 
 # Save this vector in a variable
-
+makes <- select(vehicles, make)
 
 # Use the `unique()` function to determine how many different car manufacturers
 # are represented by the data set
-
-
+unique_makes <- unique(vehicles$make)
+unique_makes <- length(unique(vehicles$make))
+unique_makes
 # Filter the data set for vehicles manufactured in 1997
-
-
+df <- vehicles[vehicles$year == 1997, ]
+man_1997 <- filter(vehicles, year == 1997)
+man_1997
 # Arrange the 1997 cars by highway (`hwy`) gas milage
 # Hint: use the `order()` function to get a vector of indices in order by value
 # See also:
 # https://www.r-bloggers.com/r-sorting-a-data-frame-by-the-contents-of-a-column/
-
+df2 <- df[order(df$hwy), ]
+arrange(vehicles, hwy)
 
 # Mutate the 1997 cars data frame to add a column `average` that has the average
 # gas milage (between city and highway mpg) for each car
-
+man_1997$average <- (man_1997$hwy * man_1997$cty) / 2
 
 # Filter the whole vehicles data set for 2-Wheel Drive vehicles that get more
 # than 20 miles/gallon in the city. 
@@ -48,7 +51,10 @@ library(fueleconomy)
 # and returns the vehicle model that gets the most hwy miles/gallon of vehicles 
 # of that make in that year.
 # You'll need to filter more (and do some selecting)!
-
+model <- function(year_choice, make_choice) {
+  filtered <- vehicles[vehicles$make == make_choice & vehicles$year == year_choice, ]
+  filtered[filtered$hwy == max(filtered$hwy), 'model']
+}
 
 # What was the most efficient Honda model of 1995?
 
